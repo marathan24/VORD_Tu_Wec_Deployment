@@ -1,0 +1,139 @@
+<html>
+  <head>
+    <title>Flask Web App</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Lexend&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      h1 {
+        font-family: G, sans-serif;
+        font-size: 50px;
+        text-align: center;
+        margin: 20px 0;
+        text-transform: uppercase;
+        position: relative;
+        perspective: 1000px;
+      }
+
+      form {
+        max-width: 600px;
+        width: 100%;
+        padding: 20px;
+      }
+
+      body {
+        background-color: #a9d6b9; /* fallback color */
+        background-image: linear-gradient(to bottom right, #cba77e, #9c891e);
+      }
+
+      label {
+        /* display: block;
+            margin-bottom: 10px;
+            border: 4px solid #cb1616;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 30px;
+            font-family: 'Poppins', sans-serif;
+            max-width: 80%;
+            margin-bottom: 20px; */
+        margin-left: 10px;
+        padding: 10px 10px;
+        background-color: #a33292;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 30px;
+
+        font-family: "Poppins", sans-serif;
+        cursor: pointer;
+      }
+
+      input[type="text"] {
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 20px;
+      }
+
+      button {
+        margin-left: 10px;
+        padding: 10px 20px;
+        background-color: #a33292;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 20px;
+        font-family: "Poppins", sans-serif;
+        cursor: pointer;
+      }
+
+      #sentence {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px; /* Set the border-radius to a specific value */
+        padding: 5px;
+        width: 100%;
+        height: 300px;
+        font-family: "Lexend", sans-serif;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Vord<br />Tu<br />Wec</h1>
+
+    <div class="container">
+      <form method="POST">
+        <label for="sentence">The words should be more than 4</label>
+        <label for="sentence">Context Before 2006</label>
+
+        <textarea id="sentence" name="sentence"></textarea>
+        <button type="submit">Submit</button>
+      </form>
+      <div id="graph-container"></div>
+    </div>
+    <script>
+      // get the form element
+      var form = document.getElementById("myForm");
+
+      // add an event listener to the form's submit event
+      form.addEventListener("submit", function (event) {
+        // prevent the default form submission behavior
+        event.preventDefault();
+
+        // get the user input
+        var sentence = document.getElementById("sentence").value;
+
+        // make an AJAX request to the server to process the input
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.responseType = "blob";
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            // display the graph image data as an image
+            var img = document.createElement("img");
+            img.src = URL.createObjectURL(xhr.response);
+            document.getElementById("graph-container").appendChild(img);
+          }
+        };
+        xhr.send(JSON.stringify({ sentence: sentence }));
+      });
+    </script>
+  </body>
+</html>
